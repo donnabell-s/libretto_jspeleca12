@@ -22,7 +22,7 @@ class StoreReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'author_id' => 'required|integer|min:1',
+            'book_id' => 'required|integer|min:1',
             'content' => 'required|string|max:250',
             'rating' => 'required|integer|min:1|max:5',
         ];

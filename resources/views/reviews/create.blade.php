@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="book_id" class="col-md-4 col-form-label text-md-end text-start">Rating</label>
+                        <label for="rating" class="col-md-4 col-form-label text-md-end text-start">Rating</label>
                         <div class="col-md-6">
                             <select class="form-select @error('rating') is-invalid @enderror" id="rating" name="rating">
                                 <option value="">-- Select Rating --</option>
@@ -50,7 +50,7 @@
                                     <option value="{{ $i }}" {{ old('rating') == $i ? 'selected' : '' }}>{{ $i }}</option>
                                 @endfor
                             </select>
-                            @error('review_id')
+                            @error('rating')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
