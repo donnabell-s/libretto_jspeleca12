@@ -10,11 +10,40 @@
     href="https://cdn.jsdelivr.net/npm/bootstrapicons@1.11.1/font/bootstrap-icons.css">
 </head>
 <body> 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('books.index') }}">Libretto jspeleca12</a>
+    <nav class="navbar navbar-light bg-light mb-4">
+        <div class="container-fluid d-flex align-items-center justify-content-start">
+            {{-- Brand logo and name --}}
+            <a class="navbar-brand me-4" href="{{ route('books.index') }}">
+                Libretto 'jspeleca12'
+            </a>
+
+            <ul class="navbar-nav flex-row">
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="{{ route('books.index') }}">
+                        <i class="bi bi-book"></i> Books
+                    </a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="{{ route('authors.index') }}">
+                        <i class="bi bi-person"></i> Authors
+                    </a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="{{ route('genres.index') }}">
+                        <i class="bi bi-person"></i> Genres
+                    </a>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="{{ route('reviews.index') }}">
+                        <i class="bi bi-person"></i> Reviews
+                    </a>
+                </li>
+
+            </ul>
         </div>
     </nav>
+
+
 
     <div class="container">
         <h3 class="mb-3">Simple Laravel 11 CRUD Application Tutorial</h3>

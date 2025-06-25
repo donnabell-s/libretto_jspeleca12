@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Author;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use Illuminate\View\View;
@@ -17,7 +18,7 @@ class BookController extends Controller
     public function index()
     {
         return view('books.index', [
-            'books' => Book::latest()->paginate(4)
+            'books' => Book::latest()->paginate(6)
         ]);
     }
 
@@ -26,7 +27,8 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+        $authors = Author::orderBy('name')->get();
+        return view('books.create', compact('authors'));
     }
 
     /**
@@ -35,7 +37,7 @@ class BookController extends Controller
     public function store(StoreBookRequest $request) : RedirectResponse
     {
         Book::create($request->validated());
-        return redirect()->route('book.index')->withSuccess('New Book is added successfully.');
+        return redirect()->route('books.index')->withSuccess('New Book is added successfully.');
     }
 
     /**
@@ -49,17 +51,18 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Book $book)
+     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        $authors = Author::orderBy('name')->get();
+        return view('books.edit', compact('book', 'authors'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBookRequest $request, Book $book) : RedirectResponse
+    public function update(UpdateBookRequest $request, Book $book): RedirectResponse
     {
-        $book->update($request->validate());
+        $book->update($request->validated());
         return redirect()->back()->withSuccess('Book is updated successfully.');
     }
 
@@ -69,6 +72,6 @@ class BookController extends Controller
     public function destroy(Book $book) : RedirectResponse
     {
         $book->delete();
-    return redirect()->route('books.index')->withSuccess('Book is deleted successfully.');
+        return redirect()->route('books.index')->withSuccess('Book is deleted successfully.');
     }
 }

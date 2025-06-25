@@ -33,14 +33,22 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <label for="author_id" class="col-md-4 col-form-label text-md-end text-start">Author ID</label>
+                        <label for="author_id" class="col-md-4 col-form-label text-md-end text-start">Author</label>
                         <div class="col-md-6">
-                            <input type="number" class="form-control @error('author_id') is-invalid @enderror" id="author_id" name="author_id" value="{{ $book->author_id }}">
+                            <select class="form-select @error('author_id') is-invalid @enderror" id="author_id" name="author_id">
+                                <option value="">-- Select Author --</option>
+                                @foreach ($authors as $author)
+                                    <option value="{{ $author->id }}" {{ $book->author_id == $author->id ? 'selected' : '' }}>
+                                        {{ $author->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                             @error('author_id')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
+
 
                     <div class="mb-3 row">
                         <div class="col-md-6 offset-md-4">
