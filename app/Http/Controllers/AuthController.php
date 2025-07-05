@@ -57,10 +57,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        Auth::login($user);
-        $request->session()->regenerate();
+        // Auth::login($user);
+        // $request->session()->regenerate();
 
-        return redirect('/');
+        // return redirect('/');
+        return redirect()->route('login')->with('success', 'Registration successful. You may now log in.');
     }
 
     // Handle logout

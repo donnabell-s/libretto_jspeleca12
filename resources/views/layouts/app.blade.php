@@ -29,6 +29,7 @@
 
             <div class="d-flex align-items-center">
                 @auth
+                    <span class="me-3">Hello, {{ Auth::user()->name }}</span>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="btn btn-outline-danger">
@@ -36,7 +37,6 @@
                         </button>
                     </form>
                 @endauth
-
             </div>
         </div>
     </nav>
@@ -44,7 +44,5 @@
     <div class="container">
         @yield('content')
     </div>
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
 </body>
 </html>
