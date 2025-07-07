@@ -9,20 +9,19 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
+
     public function showLogin()
     {
-        if (Auth::check()) return redirect('/');
+        if (Auth::check()) return redirect('/books');
         return view('auth.login');
     }
 
     public function showRegister()
     {
-        if (Auth::check()) return redirect('/');
+        if (Auth::check()) return redirect('/books');
         return view('auth.register');
     }
 
-
-    // Handle login form submission
     public function login(Request $request)
     {
         $request->validate([
@@ -33,21 +32,31 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return back()->withErrors(['email' => 'Invalid credentials.']);
+            return $request->expectsJson()
+                ? response()->json(['message' => 'Invalid credentials.'], 401)
+                : back()->withErrors(['email' => 'Invalid credentials.']);
         }
 
-        Auth::login($user); // Sanctum auto issues cookie-based token if middleware is correct
+        if ($request->expectsJson()) {
+            $token = $user->createToken('api-token', ['*'], now()->addDay())->plainTextToken;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+            ]);
+        }
+
+        Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect('/'); // or route('books.index');
+        return redirect('/books');
     }
 
-    // Handle register form submission
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
         ]);
 
@@ -57,16 +66,18 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Auth::login($user);
-        // $request->session()->regenerate();
-
-        // return redirect('/');
-        return redirect()->route('login')->with('success', 'Registration successful. You may now log in.');
+        return $request->expectsJson()
+            ? response()->json(['message' => 'User registered successfully.'], 201)
+            : redirect()->route('login')->with('success', 'Registration successful. You may now log in.');
     }
 
-    // Handle logout
     public function logout(Request $request)
     {
+        if ($request->expectsJson()) {
+            $request->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'Logged out']);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
