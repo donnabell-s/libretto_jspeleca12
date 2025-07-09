@@ -15,7 +15,7 @@ Route::get('/user', function (Request $request) {
 Route::post('/login', action: [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware(['auth:sanctum', 'check.token.expiry'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::apiResource('authors', AuthorController::class);
     Route::apiResource('books', BookController::class);

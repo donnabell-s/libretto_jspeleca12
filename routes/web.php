@@ -8,6 +8,9 @@ use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AuthController;
 
+Route::get('/', function () {
+    return redirect('books');
+});
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -21,5 +24,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('authors', AuthorController::class);
     Route::resource('genres', GenreController::class);
     Route::resource('reviews', ReviewController::class);
-    
+ 
 });
